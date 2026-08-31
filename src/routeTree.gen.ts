@@ -10,13 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MovementAssessmentRouteImport } from './routes/movement-assessment'
 import { Route as PatientsRouteImport } from './routes/patients'
 import { Route as ReferralsRouteImport } from './routes/referrals'
+import { Route as ResultsRouteImport } from './routes/results'
 import { Route as SettingsRouteImport } from './routes/settings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MovementAssessmentRoute = MovementAssessmentRouteImport.update({
+  id: '/movement-assessment',
+  path: '/movement-assessment',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PatientsRoute = PatientsRouteImport.update({
@@ -29,6 +36,11 @@ const ReferralsRoute = ReferralsRouteImport.update({
   path: '/referrals',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResultsRoute = ResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -37,35 +49,62 @@ const SettingsRoute = SettingsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/movement-assessment': typeof MovementAssessmentRoute
   '/patients': typeof PatientsRoute
   '/referrals': typeof ReferralsRoute
+  '/results': typeof ResultsRoute
   '/settings': typeof SettingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/movement-assessment': typeof MovementAssessmentRoute
   '/patients': typeof PatientsRoute
   '/referrals': typeof ReferralsRoute
+  '/results': typeof ResultsRoute
   '/settings': typeof SettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/movement-assessment': typeof MovementAssessmentRoute
   '/patients': typeof PatientsRoute
   '/referrals': typeof ReferralsRoute
+  '/results': typeof ResultsRoute
   '/settings': typeof SettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/patients' | '/referrals' | '/settings'
+  fullPaths:
+    | '/'
+    | '/movement-assessment'
+    | '/patients'
+    | '/referrals'
+    | '/results'
+    | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/patients' | '/referrals' | '/settings'
-  id: '__root__' | '/' | '/patients' | '/referrals' | '/settings'
+  to:
+    | '/'
+    | '/movement-assessment'
+    | '/patients'
+    | '/referrals'
+    | '/results'
+    | '/settings'
+  id:
+    | '__root__'
+    | '/'
+    | '/movement-assessment'
+    | '/patients'
+    | '/referrals'
+    | '/results'
+    | '/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MovementAssessmentRoute: typeof MovementAssessmentRoute
   PatientsRoute: typeof PatientsRoute
   ReferralsRoute: typeof ReferralsRoute
+  ResultsRoute: typeof ResultsRoute
   SettingsRoute: typeof SettingsRoute
 }
 
@@ -76,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movement-assessment': {
+      id: '/movement-assessment'
+      path: '/movement-assessment'
+      fullPath: '/movement-assessment'
+      preLoaderRoute: typeof MovementAssessmentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/patients': {
@@ -92,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferralsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/results': {
+      id: '/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -104,8 +157,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MovementAssessmentRoute: MovementAssessmentRoute,
   PatientsRoute: PatientsRoute,
   ReferralsRoute: ReferralsRoute,
+  ResultsRoute: ResultsRoute,
   SettingsRoute: SettingsRoute,
 }
 export const routeTree = rootRouteImport

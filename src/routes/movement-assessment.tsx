@@ -1,16 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  Activity,
-  BluetoothSearching,
-  Cpu,
-  Gauge,
-  LineChart,
-  Play,
-  RotateLine,
-  Timer,
-} from "lucide-react";
 import { MovementAssessmentPanel } from "@/components/movement/MovementAssessmentPanel";
 import { PageHeader } from "@/components/common/PageHeader";
+
 
 export const Route = createFileRoute("/movement-assessment")({
   head: () => ({
