@@ -4,7 +4,7 @@ import { SectionCard } from "@/components/common/SectionCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import type { DeviceStatus, MovementSample } from "@/types/orthosense";
+import type { DeviceStatus, SensorSample } from "@/types";
 
 const statusLabel: Record<DeviceStatus, string> = {
   disconnected: "Disconnected",
@@ -20,10 +20,10 @@ const statusLabel: Record<DeviceStatus, string> = {
  */
 export function MovementAssessmentPanel({
   status = "disconnected",
-  samples = [] as MovementSample[],
+  samples = [] as SensorSample[],
 }: {
   status?: DeviceStatus;
-  samples?: MovementSample[];
+  samples?: SensorSample[];
 }) {
   const connected = status === "connected" || status === "streaming";
 

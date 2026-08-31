@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, ChevronLeft, ChevronRight, ClipboardCheck, HeartPulse, User, Waves } from "lucide-react";
-import { MovementAssessmentPanel } from "@/components/movement/MovementAssessmentPanel";
+import { MovementAssessmentContainer } from "@/components/movement/MovementAssessmentContainer";
 import { PageHeader } from "@/components/common/PageHeader";
 import { SectionCard } from "@/components/common/SectionCard";
 import { Badge } from "@/components/ui/badge";
@@ -384,7 +384,7 @@ function NewScreening() {
         </SectionCard>
       )}
 
-      {step === 2 && <MovementAssessmentPanel />}
+      {step === 2 && <MovementAssessmentContainer />}
 
       {step === 3 && (
         <SectionCard
