@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MovementAssessmentRouteImport } from './routes/movement-assessment'
+import { Route as NewScreeningRouteImport } from './routes/new-screening'
 import { Route as PatientsRouteImport } from './routes/patients'
 import { Route as ReferralsRouteImport } from './routes/referrals'
 import { Route as ResultsRouteImport } from './routes/results'
@@ -24,6 +25,11 @@ const IndexRoute = IndexRouteImport.update({
 const MovementAssessmentRoute = MovementAssessmentRouteImport.update({
   id: '/movement-assessment',
   path: '/movement-assessment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewScreeningRoute = NewScreeningRouteImport.update({
+  id: '/new-screening',
+  path: '/new-screening',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PatientsRoute = PatientsRouteImport.update({
@@ -50,6 +56,7 @@ const SettingsRoute = SettingsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/movement-assessment': typeof MovementAssessmentRoute
+  '/new-screening': typeof NewScreeningRoute
   '/patients': typeof PatientsRoute
   '/referrals': typeof ReferralsRoute
   '/results': typeof ResultsRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/movement-assessment': typeof MovementAssessmentRoute
+  '/new-screening': typeof NewScreeningRoute
   '/patients': typeof PatientsRoute
   '/referrals': typeof ReferralsRoute
   '/results': typeof ResultsRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/movement-assessment': typeof MovementAssessmentRoute
+  '/new-screening': typeof NewScreeningRoute
   '/patients': typeof PatientsRoute
   '/referrals': typeof ReferralsRoute
   '/results': typeof ResultsRoute
@@ -77,6 +86,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/movement-assessment'
+    | '/new-screening'
     | '/patients'
     | '/referrals'
     | '/results'
@@ -85,6 +95,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/movement-assessment'
+    | '/new-screening'
     | '/patients'
     | '/referrals'
     | '/results'
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/movement-assessment'
+    | '/new-screening'
     | '/patients'
     | '/referrals'
     | '/results'
@@ -102,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MovementAssessmentRoute: typeof MovementAssessmentRoute
+  NewScreeningRoute: typeof NewScreeningRoute
   PatientsRoute: typeof PatientsRoute
   ReferralsRoute: typeof ReferralsRoute
   ResultsRoute: typeof ResultsRoute
@@ -122,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/movement-assessment'
       fullPath: '/movement-assessment'
       preLoaderRoute: typeof MovementAssessmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new-screening': {
+      id: '/new-screening'
+      path: '/new-screening'
+      fullPath: '/new-screening'
+      preLoaderRoute: typeof NewScreeningRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/patients': {
@@ -158,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MovementAssessmentRoute: MovementAssessmentRoute,
+  NewScreeningRoute: NewScreeningRoute,
   PatientsRoute: PatientsRoute,
   ReferralsRoute: ReferralsRoute,
   ResultsRoute: ResultsRoute,

@@ -166,7 +166,7 @@ function NewScreening() {
             <div className="space-y-2">
               <Label htmlFor="sex">Sex</Label>
               <Select
-                value={patient.sex ?? undefined}
+                value={patient.sex ?? ""}
                 onValueChange={(v) => setPatient({ ...patient, sex: v as Patient["sex"] })}
               >
                 <SelectTrigger id="sex">
