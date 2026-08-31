@@ -4,7 +4,7 @@ import { EmptyState } from "@/components/common/EmptyState";
 import { PageHeader } from "@/components/common/PageHeader";
 import { SectionCard } from "@/components/common/SectionCard";
 import { Button } from "@/components/ui/button";
-import type { Referral } from "@/types/orthosense";
+import { useReferrals } from "@/hooks/useReferrals";
 
 export const Route = createFileRoute("/referrals")({
   head: () => ({
@@ -32,7 +32,7 @@ const buckets = [
 ];
 
 function Referrals() {
-  const referrals: Referral[] = [];
+  const { referrals } = useReferrals();
 
   return (
     <>
