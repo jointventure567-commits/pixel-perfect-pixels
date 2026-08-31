@@ -11,7 +11,7 @@ export function usePatients(search?: string) {
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      setPatients(await getDataSource().patients.list({ search }));
+      setPatients(await getDataSource().patients.list(search ? { search } : undefined));
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e : new Error(String(e)));
