@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { SectionCard } from "@/components/common/SectionCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { Patient } from "@/types/orthosense";
+import { usePatients } from "@/hooks/usePatients";
 
 export const Route = createFileRoute("/patients")({
   head: () => ({
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/patients")({
 });
 
 function Patients() {
-  const patients: Patient[] = [];
+  const { patients } = usePatients();
 
   return (
     <>

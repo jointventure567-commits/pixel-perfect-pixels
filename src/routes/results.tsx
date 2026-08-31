@@ -13,7 +13,7 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { SectionCard } from "@/components/common/SectionCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { ScreeningResult } from "@/types/orthosense";
+import { useScreeningResult } from "@/hooks/useScreeningResult";
 
 export const Route = createFileRoute("/results")({
   head: () => ({
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/results")({
 });
 
 function Results() {
-  const result: ScreeningResult | null = null;
+  const { result } = useScreeningResult(null);
 
   return (
     <>

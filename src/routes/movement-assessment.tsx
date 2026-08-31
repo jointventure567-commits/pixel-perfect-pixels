@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MovementAssessmentPanel } from "@/components/movement/MovementAssessmentPanel";
+import { MovementAssessmentContainer } from "@/components/movement/MovementAssessmentContainer";
 import { PageHeader } from "@/components/common/PageHeader";
 
 
@@ -30,7 +30,7 @@ function MovementPage() {
         title="Movement assessment"
         description="Pair the OrthoSense sensor unit to record accelerometer and gyroscope motion during guided joint movements."
       />
-      <MovementAssessmentPanel />
+      <MovementAssessmentContainer />
     </>
   );
 }
