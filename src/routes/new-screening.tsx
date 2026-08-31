@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, ChevronLeft, ChevronRight, ClipboardCheck, HeartPulse, User, Waves } from "lucide-react";
-import { useState } from "react";
 import { MovementAssessmentPanel } from "@/components/movement/MovementAssessmentPanel";
 import { PageHeader } from "@/components/common/PageHeader";
 import { SectionCard } from "@/components/common/SectionCard";
@@ -13,7 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { emptySymptoms, type Patient, type SymptomResponses } from "@/types/orthosense";
+import { useScreeningFlow } from "@/hooks/useScreeningFlow";
+import type { Patient, SymptomResponses } from "@/types";
 
 export const Route = createFileRoute("/new-screening")({
   head: () => ({
@@ -40,8 +40,6 @@ const steps = [
   { key: "movement", label: "Movement", icon: Waves },
   { key: "review", label: "Review", icon: ClipboardCheck },
 ] as const;
-
-type PatientDraft = Partial<Pick<Patient, "fullName" | "age" | "sex" | "heightCm" | "weightKg" | "contact" | "notes">>;
 
 const severity = [
   { value: "none", label: "None" },
@@ -91,12 +89,17 @@ function SeverityQuestion({
 }
 
 function NewScreening() {
-  const [step, setStep] = useState(0);
-  const [patient, setPatient] = useState<PatientDraft>({});
-  const [symptoms, setSymptoms] = useState<SymptomResponses>(emptySymptoms);
-
-  const set = <K extends keyof SymptomResponses>(key: K, value: SymptomResponses[K]) =>
-    setSymptoms((s) => ({ ...s, [key]: value }));
+  const {
+    stepIndex: step,
+    goTo: setStep,
+    next,
+    back,
+    patient,
+    updatePatient,
+    symptoms,
+    setSymptom: set,
+    toggleJoint,
+  } = useScreeningFlow();
 
   return (
     <>
@@ -149,7 +152,7 @@ function NewScreening() {
                 id="name"
                 placeholder="Patient name"
                 value={patient.fullName ?? ""}
-                onChange={(e) => setPatient({ ...patient, fullName: e.target.value })}
+                onChange={(e) => updatePatient({ fullName: e.target.value })}
               />
             </div>
             <div className="space-y-2">
@@ -160,14 +163,14 @@ function NewScreening() {
                 min={0}
                 placeholder="Years"
                 value={patient.age ?? ""}
-                onChange={(e) => setPatient({ ...patient, age: Number(e.target.value) || null })}
+                onChange={(e) => updatePatient({ age: Number(e.target.value) || null })}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="sex">Sex</Label>
               <Select
                 value={patient.sex ?? ""}
-                onValueChange={(v) => setPatient({ ...patient, sex: v as Patient["sex"] })}
+                onValueChange={(v) => updatePatient({ sex: v as Patient["sex"] })}
               >
                 <SelectTrigger id="sex">
                   <SelectValue placeholder="Select" />
@@ -187,7 +190,7 @@ function NewScreening() {
                 type="number"
                 placeholder="cm"
                 value={patient.heightCm ?? ""}
-                onChange={(e) => setPatient({ ...patient, heightCm: Number(e.target.value) || null })}
+                onChange={(e) => updatePatient({ heightCm: Number(e.target.value) || null })}
               />
             </div>
             <div className="space-y-2">
@@ -197,7 +200,7 @@ function NewScreening() {
                 type="number"
                 placeholder="kg"
                 value={patient.weightKg ?? ""}
-                onChange={(e) => setPatient({ ...patient, weightKg: Number(e.target.value) || null })}
+                onChange={(e) => updatePatient({ weightKg: Number(e.target.value) || null })}
               />
             </div>
             <div className="space-y-2 sm:col-span-2">
@@ -206,7 +209,7 @@ function NewScreening() {
                 id="contact"
                 placeholder="Phone or email"
                 value={patient.contact ?? ""}
-                onChange={(e) => setPatient({ ...patient, contact: e.target.value })}
+                onChange={(e) => updatePatient({ contact: e.target.value })}
               />
             </div>
             <div className="space-y-2 sm:col-span-2">
@@ -216,7 +219,7 @@ function NewScreening() {
                 rows={3}
                 placeholder="Relevant history, comorbidities, occupation"
                 value={patient.notes ?? ""}
-                onChange={(e) => setPatient({ ...patient, notes: e.target.value })}
+                onChange={(e) => updatePatient({ notes: e.target.value })}
               />
             </div>
           </div>
@@ -365,14 +368,7 @@ function NewScreening() {
                     <button
                       key={j}
                       type="button"
-                      onClick={() =>
-                        set(
-                          "affectedJoints",
-                          active
-                            ? symptoms.affectedJoints.filter((x) => x !== j)
-                            : [...symptoms.affectedJoints, j],
-                        )
-                      }
+                      onClick={() => toggleJoint(j)}
                       className={cn(
                         "rounded-full border border-border px-3.5 py-1.5 text-xs font-medium transition-colors duration-200 hover:bg-accent/60",
                         active && "border-primary bg-accent text-accent-foreground",
@@ -437,12 +433,12 @@ function NewScreening() {
       )}
 
       <div className="flex items-center justify-between">
-        <Button variant="outline" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
+        <Button variant="outline" onClick={back} disabled={step === 0}>
           <ChevronLeft className="size-4" />
           Back
         </Button>
         <Button
-          onClick={() => setStep((s) => Math.min(steps.length - 1, s + 1))}
+          onClick={next}
           disabled={step === steps.length - 1}
         >
           Continue
