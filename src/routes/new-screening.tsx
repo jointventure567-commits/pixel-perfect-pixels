@@ -31,7 +31,7 @@ export const Route = createFileRoute("/new-screening")({
       },
     ],
   }),
-  component: NewScreening;
+  component: NewScreening,
 });
 
 const steps = [
